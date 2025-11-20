@@ -733,24 +733,26 @@ function showInstallButton() {
   if (existingBtn) existingBtn.remove();
   
   // 创建安装按钮
-  const installBtn = document.createElement('button');
-  installBtn.id = 'installBtn';
-  installBtn.innerHTML = '📱 安装应用到手机';
-  installBtn.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #65290d;
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 25px;
-    cursor: pointer;
-    z-index: 1000;
-    font-size: 14px;
-    box-shadow: 0 4px 12px rgba(101, 41, 13, 0.3);
-    font-family: inherit;
-  `;
+  // 创建安装按钮
+const installBtn = document.createElement('button');
+installBtn.id = 'installBtn';
+installBtn.innerHTML = '📱 安装应用到手机';
+installBtn.style.cssText = `
+  position: relative; /* 改为相对定位，放在页面流中 */
+  display: block;
+  margin: 30px auto 20px; /* 上下间距，水平居中 */
+  background: #65290d;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(101, 41, 13, 0.3);
+  font-family: inherit;
+  text-align: center;
+  max-width: 200px;
+`;
   
   installBtn.onclick = async () => {
     if (deferredPrompt) {
@@ -766,7 +768,15 @@ function showInstallButton() {
     }
   };
   
+  // 尝试找到开始测试按钮并在其后面插入安装按钮
+const startButton = document.querySelector('.start-button, button, [onclick*="startTest"]');
+if (startButton && startButton.parentNode) {
+  // 如果找到开始按钮，在其后面插入安装按钮
+  startButton.parentNode.insertBefore(installBtn, startButton.nextSibling);
+} else {
+  // 如果找不到，放在body末尾（作为备选）
   document.body.appendChild(installBtn);
+}
   console.log('✅ 安装按钮已添加到页面');
 }
 
