@@ -716,69 +716,70 @@
 <!-- 在 body 标签的末尾添加 -->
 <script>
     // PWA 安装功能
-    let deferredPrompt;
-    
-    // 监听安装提示事件
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('✅ PWA 安装提示已准备');
-      e.preventDefault();
-      deferredPrompt = e;
-      showInstallButton();
-    });
-    
-    // 显示安装按钮
-    function showInstallButton() {
-      // 移除已存在的按钮
-      const existingBtn = document.getElementById('installBtn');
-      if (existingBtn) existingBtn.remove();
+let deferredPrompt;
+
+// 监听安装提示事件
+window.addEventListener('beforeinstallprompt', (e) => {
+  console.log('✅ PWA 安装提示已准备');
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallButton();
+});
+
+// 显示安装按钮
+function showInstallButton() {
+  // 移除已存在的按钮
+  const existingBtn = document.getElementById('installBtn');
+  if (existingBtn) existingBtn.remove();
+  
+  // 创建安装按钮
+  const installBtn = document.createElement('button');
+  installBtn.id = 'installBtn';
+  installBtn.innerHTML = '📱 安装应用到手机';
+  installBtn.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #65290d;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(101, 41, 13, 0.3);
+    font-family: inherit;
+  `;
+  
+  installBtn.onclick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
       
-      // 创建安装按钮
-      const installBtn = document.createElement('button');
-      installBtn.id = 'installBtn';
-      installBtn.innerHTML = '📱 安装应用到手机';
-      installBtn.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #65290d;
-        color: white;
-        border: none;
-        padding: 12px 18px;
-        border-radius: 25px;
-        cursor: pointer;
-        z-index: 1000;
-        font-size: 14px;
-        box-shadow: 0 4px 12px rgba(101, 41, 13, 0.3);
-        font-family: inherit;
-      `;
+      if (outcome === 'accepted') {
+        console.log('✅ 用户接受了安装');
+        installBtn.remove();
+      }
       
-      installBtn.onclick = async () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          
-          if (outcome === 'accepted') {
-            console.log('✅ 用户接受了安装');
-            installBtn.remove();
-          }
-          
-          deferredPrompt = null;
-        }
-      };
-      
-      document.body.appendChild(installBtn);
+      deferredPrompt = null;
     }
-    
-    // 监听应用已安装事件
-    window.addEventListener('appinstalled', (evt) => {
-      console.log('🎉 PWA 已成功安装到设备');
-      const installBtn = document.getElementById('installBtn');
-      if (installBtn) installBtn.remove();
-    });
-    
-    // 检查页面加载时是否已有安装提示
-    if (window.deferredPrompt) {
-      showInstallButton();
-    }
+  };
+  
+  document.body.appendChild(installBtn);
+  console.log('✅ 安装按钮已添加到页面');
+}
+
+// 监听应用已安装事件
+window.addEventListener('appinstalled', (evt) => {
+  console.log('🎉 PWA 已成功安装到设备');
+  const installBtn = document.getElementById('installBtn');
+  if (installBtn) installBtn.remove();
+});
+
+// 检查页面加载时是否已有安装提示
+if (window.deferredPrompt) {
+  showInstallButton();
+}
     </script>
 </html>
