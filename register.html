@@ -1,3 +1,22 @@
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- 主题色 -->
+<meta name="theme-color" content="#65290d">
+
+<!-- iOS Safari 支持 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="医生测试">
+
+<!-- 图标链接 -->
+<link rel="icon" type="image/png" href="images/icon-192.png">
+<link rel="apple-touch-icon" href="images/icon-192.png">
+
+<!-- 微软Tile -->
+<meta name="msapplication-TileColor" content="#65290d">
+<meta name="msapplication-TileImage" content="images/icon-144.png">
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -248,6 +267,26 @@ function startTest() {
         
 
 
+    </script>
+    <!-- Service Worker 注册 -->
+<script>
+    // 检查浏览器是否支持 Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        // 注册 Service Worker
+        navigator.serviceWorker.register('./sw.js')
+          .then(function(registration) {
+            console.log('✅ ServiceWorker 注册成功，作用域: ', registration.scope);
+            console.log('注册详情:', registration);
+          })
+          .catch(function(error) {
+            console.log('❌ ServiceWorker 注册失败: ', error);
+            console.log('错误详情:', error.message);
+          });
+      });
+    } else {
+      console.log('❌ 当前浏览器不支持 Service Worker');
+    }
     </script>
 </body>
 </html>

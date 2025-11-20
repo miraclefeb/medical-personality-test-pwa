@@ -1,9 +1,31 @@
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- 主题色 -->
+<meta name="theme-color" content="#65290d">
+
+<!-- iOS Safari PWA 支持 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="医生测试">
+<link rel="apple-touch-icon" href="images/icon-192.png">
+
+<!-- 避免电话号码自动识别 -->
+<meta name="format-detection" content="telephone=no">
+
+<!-- 图标链接 -->
+<link rel="icon" type="image/png" href="images/icon-192.png">
+<link rel="apple-touch-icon" href="images/icon-192.png">
+
+<!-- 微软Tile -->
+<meta name="msapplication-TileColor" content="#65290d">
+<meta name="msapplication-TileImage" content="images/icon-144.png">
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
-    <title>医生职业人格测试</title>
+    <title>医生职业人格测试①</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -669,6 +691,26 @@
         }
 
 
+    </script>
+    <!-- Service Worker 注册 -->
+<script>
+    // 检查浏览器是否支持 Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        // 注册 Service Worker
+        navigator.serviceWorker.register('./sw.js')
+          .then(function(registration) {
+            console.log('✅ ServiceWorker 注册成功，作用域: ', registration.scope);
+            console.log('注册详情:', registration);
+          })
+          .catch(function(error) {
+            console.log('❌ ServiceWorker 注册失败: ', error);
+            console.log('错误详情:', error.message);
+          });
+      });
+    } else {
+      console.log('❌ 当前浏览器不支持 Service Worker');
+    }
     </script>
 </body>
 </html>
